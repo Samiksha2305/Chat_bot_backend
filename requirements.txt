@@ -1,10 +1,12 @@
+--only-binary=all
+
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
 openai==1.51.0
-pandas==2.2.2
-numpy==1.26.4
-matplotlib==3.8.4
+pandas==2.1.4
+numpy==1.24.4
+matplotlib==3.7.5
 requests==2.32.3
 beautifulsoup4==4.12.3
 lxml==5.2.2
