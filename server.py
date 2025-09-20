@@ -25,17 +25,21 @@ from agents.router_agent import RouterAgent
 
 app = FastAPI(title="Multi-Agent API")
 
-# CORS - Updated for production
+# CORS - Production configuration
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "http://localhost:3000",
         "http://localhost:5173", 
         "http://127.0.0.1:5173",
-        "https://*.onrender.com",  # Add your frontend domain here
-        "*"  # For development - remove in production
+        "https://*.vercel.app",
+        "https://*.vercel.app/*",
+        frontend_url,  # Your specific Vercel URL
+        "*"  # Remove this in production if needed
     ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
