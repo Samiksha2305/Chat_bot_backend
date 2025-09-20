@@ -3,6 +3,10 @@ import time
 import shutil
 from pathlib import Path
 from typing import Optional
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,21 +14,26 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from starlette.concurrency import run_in_threadpool
 
-from backend.agents.chatbot_agent import ChatbotAgent
-from backend.agents.news_agent import WebAgent
-from backend.agents.sql_agent import SQLAgent
-from backend.agents.analyst_agent import AnalystAgent
-from backend.agents.notes_agent import NotesAgent
-from backend.agents.code_review import CodeReviewerAgent  # make sure filename matches
-from backend.agents.router_agent import RouterAgent
+from agents.chatbot_agent import ChatbotAgent
+from agents.news_agent import WebAgent
+from agents.sql_agent import SQLAgent
+from agents.analyst_agent import AnalystAgent
+from agents.notes_agent import NotesAgent
+from agents.code_review import CodeReviewerAgent  # make sure filename matches
+from agents.router_agent import RouterAgent
 
 
 app = FastAPI(title="Multi-Agent API")
 
-# CORS
+# CORS - Updated for production
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173",
+        "https://*.onrender.com",  # Add your frontend domain here
+        "*"  # For development - remove in production
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

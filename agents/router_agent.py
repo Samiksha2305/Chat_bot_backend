@@ -1,11 +1,11 @@
 # router_agent.py
 from openai import OpenAI
-from backend.agents.sql_agent import SQLAgent
-from backend.agents.analyst_agent import AnalystAgent
-from backend.agents.notes_agent import NotesAgent
-from backend.agents.code_review import CodeReviewerAgent
-from backend.agents.news_agent import WebAgent
-from backend.agents.chatbot_agent import ChatbotAgent
+from agents.sql_agent import SQLAgent
+from agents.analyst_agent import AnalystAgent
+from agents.notes_agent import NotesAgent
+from agents.code_review import CodeReviewerAgent
+from agents.news_agent import WebAgent
+from agents.chatbot_agent import ChatbotAgent
 
 class RouterAgent:
     def __init__(self):

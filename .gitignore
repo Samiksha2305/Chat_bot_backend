@@ -1,15 +1,22 @@
+# Environment variables (keep .env.example)
 .env
 
-.pycache__/
+# Python cache and compiled files
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+# Database files
 *.db
 *.sqlite3
+
+# Log files
 *.log
 *.pot
 *.mo
+
+# Editor files
 *.swp
 *.swo
 *.DS_Store
@@ -17,3 +24,12 @@ __pycache__/
 .idea/
 *.iml
 *.class
+
+# Data directory (uploads, plots)
+data/uploads/*
+data/*.png
+data/*.jpg
+data/*.csv
+
+# Keep data directory structure
+!data/.gitkeep
