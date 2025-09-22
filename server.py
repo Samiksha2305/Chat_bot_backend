@@ -50,33 +50,14 @@ app.mount("/data", StaticFiles(directory="data"), name="data")
 UPLOAD_DIR = Path("data/uploads")
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
-# Agents - Lazy initialization with error handling
-_agents = {}
-
-def get_agent(agent_type: str):
-    """Get agent with lazy initialization and error handling"""
-    if agent_type not in _agents:
-        try:
-            if agent_type == "chatbot":
-                _agents[agent_type] = ChatbotAgent()
-            elif agent_type == "news":
-                _agents[agent_type] = WebAgent()
-            elif agent_type == "sql":
-                _agents[agent_type] = SQLAgent()
-            elif agent_type == "analyst":
-                _agents[agent_type] = AnalystAgent()
-            elif agent_type == "notes":
-                _agents[agent_type] = NotesAgent()
-            elif agent_type == "code_review":
-                _agents[agent_type] = CodeReviewerAgent()
-            elif agent_type == "router":
-                _agents[agent_type] = RouterAgent()
-            else:
-                raise ValueError(f"Unknown agent type: {agent_type}")
-        except Exception as e:
-            print(f"Error initializing {agent_type} agent: {e}")
-            raise
-    return _agents[agent_type]
+# Agents
+chatbot = ChatbotAgent()
+news = WebAgent()
+sql = SQLAgent()
+analyst = AnalystAgent()
+notes = NotesAgent()
+code_review = CodeReviewerAgent()
+router = RouterAgent()
 
 # Schemas
 class ChatReq(BaseModel):
@@ -125,7 +106,6 @@ def _with_timing(payload: dict, started_at: float):
 async def api_chatbot(b: ChatReq):
     t0 = time.time()
     try:
-        chatbot = get_agent("chatbot")
         out = await run_in_threadpool(chatbot.run, b.message)
         return _with_timing({"output": out}, t0)
     except Exception as e:
@@ -136,7 +116,6 @@ async def api_chatbot(b: ChatReq):
 async def api_webnews(b: NewsReq):
     t0 = time.time()
     try:
-        news = get_agent("news")
         out = await run_in_threadpool(news.ask, b.question)
         return _with_timing({"output": out}, t0)
     except Exception as e:
@@ -147,7 +126,6 @@ async def api_webnews(b: NewsReq):
 async def api_sql(b: SqlReq):
     t0 = time.time()
     try:
-        sql = get_agent("sql")
         out = await run_in_threadpool(sql.run, b.prompt)
         return _with_timing({"output": out}, t0)
     except Exception as e:
@@ -158,7 +136,6 @@ async def api_sql(b: SqlReq):
 async def api_analyst(b: AnalystReq):
     t0 = time.time()
     try:
-        analyst = get_agent("analyst")
         ask = b.ask or "Load this CSV and summarize; then create a relevant chart."
         csv = b.csv_text or ""
         prompt = f"Here is a CSV:\n```csv\n{csv}\n```\n{ask}"
@@ -176,7 +153,6 @@ async def api_analyst(b: AnalystReq):
 async def api_analyst_file(file: UploadFile = File(...)):
     t0 = time.time()
     try:
-        analyst = get_agent("analyst")
         dest = UPLOAD_DIR / file.filename
         with dest.open("wb") as f:
             shutil.copyfileobj(file.file, f)
@@ -200,7 +176,6 @@ async def api_analyst_file(file: UploadFile = File(...)):
 async def api_notes(b: NotesReq):
     t0 = time.time()
     try:
-        notes = get_agent("notes")
         text = b.notes or b.prompt or ""
         out = await run_in_threadpool(
             notes.summarize,
