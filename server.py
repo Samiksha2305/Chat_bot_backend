@@ -26,7 +26,6 @@ from agents.router_agent import RouterAgent
 app = FastAPI(title="Multi-Agent API")
 
 # CORS - Production configuration
-frontend_url = os.getenv("FRONTEND_URL", "http://localhost:5173")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -35,7 +34,7 @@ app.add_middleware(
         "http://127.0.0.1:5173",
         "https://*.vercel.app",
         "https://*.vercel.app/*",
-        frontend_url,  # Your specific Vercel URL
+        "https://chat-bot-umber-three.vercel.app/" # Your specific Vercel URL
         "*"  # Remove this in production if needed
     ],
     allow_credentials=True,
