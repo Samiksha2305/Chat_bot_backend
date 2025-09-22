@@ -28,10 +28,13 @@ app = FastAPI(title="Multi-Agent API")
 # CORS - Production configuration
 app.add_middleware(
     CORSMiddleware,
-        allow_origins=[
-        "https://your-vercel-app.vercel.app",  # Replace with your actual Vercel URL
+    allow_origins=[
         "http://localhost:3000",
-        "http://localhost:5173",
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173",
+        "https://*.vercel.app",
+        "https://*.vercel.app/*",
+        "https://chat-bot-umber-three.vercel.app",  # Your specific Vercel URL
         "*"  # Remove this in production if needed
     ],
     allow_credentials=True,
