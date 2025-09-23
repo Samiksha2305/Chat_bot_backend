@@ -38,7 +38,7 @@ app.add_middleware(
         "*"  # Remove this in production if needed
     ],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
